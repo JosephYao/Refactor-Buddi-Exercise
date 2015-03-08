@@ -43,7 +43,7 @@ public class MutableBudgetCategoryImpl extends MutableSourceImpl implements Muta
 	}
 	
 	public long getAmount(Date date) {
-		return getBudgetCategory().getAmount(date);
+		return getBudgetCategory().getAmountOfBudgetPeriod(date);
 	}
 	
 	public ImmutableBudgetCategoryType getBudgetPeriodType() {

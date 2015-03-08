@@ -44,11 +44,11 @@ public abstract class BudgetCategoryType {
 	 */
 	public abstract Date getBudgetPeriodOffset(Date date, int offset);
 
-    public Date getNextBudgetPeriod(Date date) {
+    public Date getStartOfNextBudgetPeriod(Date date) {
         return getBudgetPeriodOffset(date, 1);
     }
 
-    public Date getPreviousBudgetPeriod(Date date) {
+    public Date getStartOfPreviousBudgetPeriod(Date date) {
         return getBudgetPeriodOffset(date, -1);
     }
 	

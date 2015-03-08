@@ -305,7 +305,7 @@ public class ScheduledTransactionEditorDialog extends MossDialog implements Acti
 //
 //		//If we're just fillinf in the transaction, we need at least
 //		// amount, description, to, and from.
-//		if ((transactionEditor.getAmount() != 0)
+//		if ((transactionEditor.getAmountOfBudgetPeriod() != 0)
 //				&& (transactionEditor.getDescription() != null && transactionEditor.getDescription().length() > 0)
 //				&& (transactionEditor.getTo() != null)
 //				&& (transactionEditor.getFrom() != null)){
@@ -316,7 +316,7 @@ public class ScheduledTransactionEditorDialog extends MossDialog implements Acti
 //		// without the transaction being filled out.  However, if any
 //		// part of the transaction is filled in, it all must be.
 //		if ((message.getText().length() > 0)
-//				&& (transactionEditor.getAmount() == 0)
+//				&& (transactionEditor.getAmountOfBudgetPeriod() == 0)
 //				&& (transactionEditor.getDescription() == null 
 //						|| transactionEditor.getDescription().length() == 0)
 //				&& (transactionEditor.getTo() == null)

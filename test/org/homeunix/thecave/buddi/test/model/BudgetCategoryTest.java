@@ -34,9 +34,9 @@ public class BudgetCategoryTest {
 			bc.setAmount(DateUtil.getDate(2007, Calendar.OCTOBER, 1), 333);
 			bc.setAmount(DateUtil.getDate(2007, Calendar.NOVEMBER, 1), 331);
 			
-			assertEquals((double) 100, bc.getAmount(DateUtil.getDate(2007, Calendar.APRIL, 1)), 1);
-			assertEquals((double) 100, bc.getAmount(DateUtil.getDate(2007, Calendar.APRIL, 10)), 1);
-			assertEquals((double) 100, bc.getAmount(DateUtil.getDate(2007, Calendar.APRIL, 28)), 1);
+			assertEquals((double) 100, bc.getAmountOfBudgetPeriod(DateUtil.getDate(2007, Calendar.APRIL, 1)), 1);
+			assertEquals((double) 100, bc.getAmountOfBudgetPeriod(DateUtil.getDate(2007, Calendar.APRIL, 10)), 1);
+			assertEquals((double) 100, bc.getAmountOfBudgetPeriod(DateUtil.getDate(2007, Calendar.APRIL, 28)), 1);
 			
 			assertEquals((double) 300, bc.getAmount(DateUtil.getDate(2007, Calendar.APRIL, 1), DateUtil.getDate(2007, Calendar.MAY, 31)), 1);
 			assertEquals((double) 149, bc.getAmount(DateUtil.getDate(2007, Calendar.APRIL, 15), DateUtil.getDate(2007, Calendar.MAY, 15)), 1);
@@ -64,7 +64,7 @@ public class BudgetCategoryTest {
 		bc.setAmount(DateUtil.getDate(2007, Calendar.NOVEMBER, 12), 100);
 	
 		assertEquals(100l,
-				bc.getAmount(DateUtil.getDate(2007, Calendar.OCTOBER, 1)));
+				bc.getAmountOfBudgetPeriod(DateUtil.getDate(2007, Calendar.OCTOBER, 1)));
 		assertEquals(14l,
 				bc.getAmount(
 						DateUtil.getDate(2007, Calendar.OCTOBER, 1),
