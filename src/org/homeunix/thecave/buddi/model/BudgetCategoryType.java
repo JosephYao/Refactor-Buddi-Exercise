@@ -43,6 +43,14 @@ public abstract class BudgetCategoryType {
 	 * @return
 	 */
 	public abstract Date getBudgetPeriodOffset(Date date, int offset);
+
+    public Date getNextBudgetPeriod(Date date) {
+        return getBudgetPeriodOffset(date, 1);
+    }
+
+    public Date getPreviousBudgetPeriod(Date date) {
+        return getBudgetPeriodOffset(date, -1);
+    }
 	
 	/**
 	 * Returns the date format associated with this budget period type.  This is
