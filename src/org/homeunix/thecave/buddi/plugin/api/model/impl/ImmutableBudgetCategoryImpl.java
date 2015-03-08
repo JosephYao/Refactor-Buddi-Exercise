@@ -35,7 +35,7 @@ public class ImmutableBudgetCategoryImpl extends ImmutableSourceImpl implements 
 	}
 	
 	public long getAmount(Date date) {
-		return getBudgetCategory().getAmountOfBudgetPeriod(date);
+		return getBudgetCategory().getAmount(date);
 	}
 	
 	public ImmutableBudgetCategoryType getBudgetPeriodType() {

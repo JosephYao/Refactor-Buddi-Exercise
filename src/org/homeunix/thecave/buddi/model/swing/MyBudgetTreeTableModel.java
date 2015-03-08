@@ -121,13 +121,13 @@ public class MyBudgetTreeTableModel extends AbstractTreeTableModel {
 
 				Object[] retValues = new Object[6];
 				retValues[0] = bc;
-				retValues[1] = bc.getAmountOfBudgetPeriod(getColumnDate(column));
+				retValues[1] = bc.getAmount(getColumnDate(column));
 				retValues[2] = getChildCount(node) == 0 ? 0 : getChildTotal(node, column);
 				retValues[3] = getChildDepth(node);
 				retValues[4] = getActual(bc, getColumnDate(column), false);
 				retValues[5] = getActual(bc, getColumnDate(column), true);
 
-				//long value = bc.getAmountOfBudgetPeriod(getColumnDate(column));
+				//long value = bc.getAmount(getColumnDate(column));
 				//return TextFormatter.getHtmlWrapper(TextFormatter.getFormattedCurrency(value, InternalFormatter.isRed(bc, value)));
 				return retValues;
 			}
@@ -181,9 +181,9 @@ public class MyBudgetTreeTableModel extends AbstractTreeTableModel {
 
 	private long getChildTotal(Object node, int column){
 		if (PrefsModel.getInstance().isShowFlatBudget())
-			return ((BudgetCategory) node).getAmountOfBudgetPeriod(getColumnDate(column));
+			return ((BudgetCategory) node).getAmount(getColumnDate(column));
 		if (node instanceof BudgetCategory){
-			long childTotal = ((BudgetCategory) node).getAmountOfBudgetPeriod(getColumnDate(column));
+			long childTotal = ((BudgetCategory) node).getAmount(getColumnDate(column));
 			for (int i = 0; i < getChildCount(node); i++){
 				childTotal += getChildTotal(getChild(node, i), column);
 			}

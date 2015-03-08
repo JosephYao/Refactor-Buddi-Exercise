@@ -757,7 +757,7 @@ public class DocumentImpl extends AbstractDocument implements ModelObject, Docum
 			registerObjectInUidMap(bc);
 		}
 
-//		for (BudgetPeriodBean bpb : dataModel.createBudgetPeriodsTill().values()) {
+//		for (BudgetPeriodBean bpb : dataModel.getBudgetPeriods().values()) {
 //		BudgetPeriod bp = new BudgetPeriod(this, bpb);
 //		checkValid(bp, false, true);
 //		registerObjectInUidMap(bp);			
@@ -811,7 +811,7 @@ public class DocumentImpl extends AbstractDocument implements ModelObject, Docum
 		}
 
 //		sb.append("\n--Budget Periods--\n");
-//		List<String> periodDates = new LinkedList<String>(dataModel.createBudgetPeriodsTill().keySet());
+//		List<String> periodDates = new LinkedList<String>(dataModel.getBudgetPeriods().keySet());
 //		Collections.sort(periodDates);
 //		for (String d : periodDates) {
 //		sb.append(d).append(getBudgetPeriod(d));

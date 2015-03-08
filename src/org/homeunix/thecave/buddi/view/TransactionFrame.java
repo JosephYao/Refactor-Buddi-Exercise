@@ -773,14 +773,14 @@ public class TransactionFrame extends MossAssociatedDocumentFrame implements Act
 							clearedBalanceTotal -= t.getAmount();
 						}
 						else
-							notClearedTotal -= t.getAmount(); //(t.getAmountOfBudgetPeriod() * (t.isInflow() ? 1 : -1));
+							notClearedTotal -= t.getAmount(); //(t.getAmount() * (t.isInflow() ? 1 : -1));
 						
 						if (t.isReconciledFrom()){
 							reconciledTotal -= t.getAmount();
 							reconciledBalanceTotal -= t.getAmount();
 						}
 						else
-							notReconciledTotal -= t.getAmount(); //(t.getAmountOfBudgetPeriod() * (t.isInflow() ? 1 : -1));
+							notReconciledTotal -= t.getAmount(); //(t.getAmount() * (t.isInflow() ? 1 : -1));
 					}
 					else if (t.getTo().equals(associatedSource)){
 						if (t.isClearedTo()){
@@ -788,14 +788,14 @@ public class TransactionFrame extends MossAssociatedDocumentFrame implements Act
 							clearedBalanceTotal += t.getAmount();
 						}
 						else
-							notClearedTotal += t.getAmount(); //(t.getAmountOfBudgetPeriod() * (t.isInflow() ? 1 : -1));
+							notClearedTotal += t.getAmount(); //(t.getAmount() * (t.isInflow() ? 1 : -1));
 
 						if (t.isReconciledTo()){
 							reconciledTotal += t.getAmount();
 							reconciledBalanceTotal += t.getAmount();
 						}
 						else
-							notReconciledTotal += t.getAmount(); //(t.getAmountOfBudgetPeriod() * (t.isInflow() ? 1 : -1));
+							notReconciledTotal += t.getAmount(); //(t.getAmount() * (t.isInflow() ? 1 : -1));
 					}
 					else if (t.getFrom() instanceof SplitImpl){
 						for (TransactionSplit split : t.getFromSplits()){
@@ -805,14 +805,14 @@ public class TransactionFrame extends MossAssociatedDocumentFrame implements Act
 									clearedBalanceTotal -= split.getAmount();
 								}
 								else
-									notClearedTotal -= split.getAmount(); //(t.getAmountOfBudgetPeriod() * (t.isInflow() ? 1 : -1));
+									notClearedTotal -= split.getAmount(); //(t.getAmount() * (t.isInflow() ? 1 : -1));
 								
 								if (t.isReconciledFrom()){
 									reconciledTotal -= split.getAmount();
 									reconciledBalanceTotal -= split.getAmount();
 								}
 								else
-									notReconciledTotal -= split.getAmount(); //(t.getAmountOfBudgetPeriod() * (t.isInflow() ? 1 : -1));
+									notReconciledTotal -= split.getAmount(); //(t.getAmount() * (t.isInflow() ? 1 : -1));
 								
 							}
 						}
@@ -825,14 +825,14 @@ public class TransactionFrame extends MossAssociatedDocumentFrame implements Act
 									clearedBalanceTotal += split.getAmount();
 								}
 								else
-									notClearedTotal += split.getAmount(); //(t.getAmountOfBudgetPeriod() * (t.isInflow() ? 1 : -1));
+									notClearedTotal += split.getAmount(); //(t.getAmount() * (t.isInflow() ? 1 : -1));
 
 								if (t.isReconciledTo()){
 									reconciledTotal += split.getAmount();
 									reconciledBalanceTotal += split.getAmount();
 								}
 								else
-									notReconciledTotal += split.getAmount(); //(t.getAmountOfBudgetPeriod() * (t.isInflow() ? 1 : -1));
+									notReconciledTotal += split.getAmount(); //(t.getAmount() * (t.isInflow() ? 1 : -1));
 							}
 						}
 					}

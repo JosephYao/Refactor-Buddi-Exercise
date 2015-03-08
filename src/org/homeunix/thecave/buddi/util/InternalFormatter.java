@@ -158,8 +158,8 @@ public class InternalFormatter {
 //	}
 //	
 //	public static boolean isRed(Transaction t, boolean toSelectedAccount){
-//		if (!toSelectedAccount && t.getAmountOfBudgetPeriod() >= 0
-//				|| toSelectedAccount && t.getAmountOfBudgetPeriod() < 0)
+//		if (!toSelectedAccount && t.getAmount() >= 0
+//				|| toSelectedAccount && t.getAmount() < 0)
 //			return true;
 //		else
 //			return false;

@@ -16,7 +16,7 @@ public interface BudgetCategory extends Source, Expandable {
 	 * @param periodDate
 	 * @return
 	 */
-	public long getAmountOfBudgetPeriod(Date periodDate);
+	public long getAmount(Date periodDate);
 	
 	/**
 	 * Returns the budgeted amount associated with this budget category, over
@@ -34,7 +34,7 @@ public interface BudgetCategory extends Source, Expandable {
 	 * total of $643.
 	 * 
 	 * If you pass in the start date as the first day in the period, and the end day
-	 * as the last day, you will get back the same number as getAmountOfBudgetPeriodlled getAmount(Date)
+	 * as the last day, you will get back the same number as if you called getAmount(Date)
 	 * with a day in the same budget period. 
 	 * @param startDate
 	 * @param endDate

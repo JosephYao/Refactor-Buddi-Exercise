@@ -43,7 +43,7 @@ public abstract class BudgetCategoryType {
 	 * @return
 	 */
 	public abstract Date getBudgetPeriodOffset(Date date, int offset);
-
+	
 	/**
 	 * Returns the date format associated with this budget period type.  This is
 	 * used in the My Budgets window to format the date spinner and the column 
