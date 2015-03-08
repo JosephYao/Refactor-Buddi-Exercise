@@ -15,25 +15,12 @@ public class BudgetPeriod {
         this.period = new Period(budgetPeriodType.getStartOfBudgetPeriod(date), budgetPeriodType.getEndOfBudgetPeriod(date));
     }
 
-    public boolean equals(Object obj) {
-        BudgetPeriod anotherBudgetPeriod = (BudgetPeriod) obj;
-        return this.period.equals(anotherBudgetPeriod.period);
-    }
-
     public BudgetPeriod nextBudgetPeriod() {
-        return new BudgetPeriod(type, type.getStartOfNextBudgetPeriod(period.getStartDate()));
+        return new BudgetPeriod(type, type.getBudgetPeriodOffset(period.getStartDate(), 1));
     }
 
     public Date getStartDate() {
         return this.period.getStartDate();
-    }
-
-    public BudgetPeriod previousBudgetPeriod() {
-        return new BudgetPeriod(type, type.getStartOfPreviousBudgetPeriod(period.getStartDate()));
-    }
-
-    public Date getEndDate() {
-        return this.period.getEndDate();
     }
 
     public long getDayCount() {
@@ -45,11 +32,15 @@ public class BudgetPeriod {
 
         BudgetPeriod current = this;
 
-		while (current.getStartDate().before(endBudgetPeriod.getEndDate())){
+        while (current.getStartDate().before(endBudgetPeriod.period.getEndDate())){
             budgetPeriods.add(current);
             current = current.nextBudgetPeriod();
 		}
 
 		return budgetPeriods;
 	}
+
+    public Period getPeriod() {
+        return period;
+    }
 }

@@ -21,12 +21,14 @@ public class Period {
         return endDate;
     }
 
-    public boolean equals(Object obj) {
-        Period another = (Period) obj;
-        return this.startDate.equals(another.startDate);
-    }
-
     public long getDayCount() {
         return DateUtil.getDaysBetween(startDate, endDate, true);
+    }
+
+    public long getOverlappingDayCount(Period another) {
+        Date startDateOfOverlapping = startDate.after(another.startDate) ? startDate : another.startDate;
+        Date endDateOfOverlapping = endDate.before(another.endDate) ? endDate : another.endDate;
+
+        return new Period(startDateOfOverlapping, endDateOfOverlapping).getDayCount();
     }
 }
