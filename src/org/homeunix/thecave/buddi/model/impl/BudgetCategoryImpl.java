@@ -103,30 +103,22 @@ public class BudgetCategoryImpl extends SourceImpl implements BudgetCategory {
     }
 
     private long getAmountWithValidatePeriod(Period period) {
-        //If Start and End are in the same budget period
         BudgetPeriod firstBudgetPeriod = createFirstBudgetPeriod(period);
         BudgetPeriod lastBudgetPeriod = createLastBudgetPeriod(period);
         if (firstBudgetPeriod.equals(lastBudgetPeriod)){
-return (long) getAmountInPeriod(period.getStartDate(), period.getEndDate());
+            return (long) getAmountInPeriod(period, firstBudgetPeriod);
         }
 
-        //If the area between Start and End overlap at least two budget periods.
-        if (firstBudgetPeriod.nextBudgetPeriod().getStartDate().equals(lastBudgetPeriod.getStartDate())
-                || firstBudgetPeriod.nextBudgetPeriod().getStartDate().before(lastBudgetPeriod.getStartDate())){
-double totalStartPeriod = getAmountInPeriod(period.getStartDate(), firstBudgetPeriod.getEndDate());
+        double totalStartPeriod = getAmountInPeriod(new Period(period.getStartDate(), firstBudgetPeriod.getEndDate()), firstBudgetPeriod);
 
-            double totalInMiddle = 0;
-            for (String periodKey : getBudgetPeriods(
-                    firstBudgetPeriod.nextBudgetPeriod().getStartDate(),
-                    lastBudgetPeriod.previousBudgetPeriod().getStartDate())){
-                totalInMiddle += getAmountOfBudgetPeriod(getPeriodDate(periodKey));
-            }
-
-double totalEndPeriod = getAmountInPeriod(lastBudgetPeriod.getStartDate(), period.getEndDate());
-            return (long) (totalStartPeriod + totalInMiddle + totalEndPeriod);
+        double totalInMiddle = 0;
+        for (BudgetPeriod budgetPeriod : firstBudgetPeriod.nextBudgetPeriod().createBudgetPeriodsTill(
+                lastBudgetPeriod.previousBudgetPeriod())){
+            totalInMiddle += getAmountOfBudgetPeriod(budgetPeriod.getStartDate());
         }
 
-        throw new RuntimeException("You should not be here.  We have returned all legitimate numbers from getAmountOfBudgetPeriod(Date, Date) in BudgetCategoryImpl.  Please contact Wyatt Olson with details on how you got here (what steps did you perform in Buddi to get this error message).");
+        double totalEndPeriod = getAmountInPeriod(new Period(lastBudgetPeriod.getStartDate(), period.getEndDate()), lastBudgetPeriod);
+        return (long) (totalStartPeriod + totalInMiddle + totalEndPeriod);
     }
 
     private BudgetPeriod createLastBudgetPeriod(Period period) {
@@ -137,34 +129,12 @@ double totalEndPeriod = getAmountInPeriod(lastBudgetPeriod.getStartDate(), perio
         return new BudgetPeriod(getBudgetPeriodType(), period.getStartDate());
     }
 
-    private double getAmountInPeriod(Date startDate, Date endDate) {
-        long amount = getAmountOfBudgetPeriod(startDate);
-        long daysInPeriod = getBudgetPeriodType().getDaysInPeriod(startDate);
-        long daysBetween = DateUtil.getDaysBetween(startDate, endDate, true);
-        return (double) amount / (double) daysInPeriod * daysBetween;
+    private double getAmountInPeriod(Period period, BudgetPeriod budgetPeriod) {
+        long amountOfBudgetPeriod = getAmountOfBudgetPeriod(budgetPeriod.getStartDate());
+        return (double) amountOfBudgetPeriod / (double) budgetPeriod.getDayCount() * period.getDayCount();
     }
 
     /**
-	 * Returns a list of BudgetPeriods, covering the entire range of periods
-	 * occupied by startDate to endDate.
-	 * @param startDate
-	 * @param endDate
-	 * @return
-	 */
-	public List<String> getBudgetPeriods(Date startDate, Date endDate){
-		List<String> budgetPeriodKeys = new LinkedList<String>();
-
-		Date temp = getBudgetPeriodType().getStartOfBudgetPeriod(startDate);
-
-		while (temp.before(getBudgetPeriodType().getEndOfBudgetPeriod(endDate))){
-			budgetPeriodKeys.add(getPeriodKey(temp));
-			temp = getBudgetPeriodType().getBudgetPeriodOffset(temp, 1);
-		}
-
-		return budgetPeriodKeys;
-	}
-	
-	/**
 	 * Sets the budgeted amount for the given time period.
 	 * @param periodDate
 	 * @param amount
