@@ -102,28 +102,27 @@ public class BudgetCategoryImpl extends SourceImpl implements BudgetCategory {
         return getAmountWithValidatePeriod(new Period(startDate, endDate));
     }
 
-    private long getAmountWithValidatePeriod(Period period) {
-        BudgetPeriod firstBudgetPeriod = createBudgetPeriod(period.getStartDate());
-        BudgetPeriod lastBudgetPeriod = createBudgetPeriod(period.getEndDate());
-        double total = 0;
-
-        for (BudgetPeriod budgetPeriod : firstBudgetPeriod.createBudgetPeriodsTill(lastBudgetPeriod))
-            total += getAmountOfOverlappingDays(period, budgetPeriod);
-
-        return (long) total;
+    private long getAmountWithValidatePeriod(final Period period) {
+		return (long) firstBudgetPeriod(period).createBudgetPeriodsTill(lastBudgetPeriod(period)).stream()
+				.mapToDouble(budgetPeriod -> getAmountOfOverlappingDays(period, budgetPeriod))
+                .sum();
     }
 
-    private double getAmountOfOverlappingDays(Period period, BudgetPeriod budgetPeriod) {
+	private BudgetPeriod lastBudgetPeriod(Period period) {
+		return new BudgetPeriod(getBudgetPeriodType(), period.getEndDate());
+	}
+
+	private BudgetPeriod firstBudgetPeriod(Period period) {
+		return new BudgetPeriod(getBudgetPeriodType(), period.getStartDate());
+	}
+
+	private double getAmountOfOverlappingDays(Period period, BudgetPeriod budgetPeriod) {
         long amountOfBudgetPeriod = getAmountOfBudgetPeriod(budgetPeriod.getStartDate());
         long overlappingDayCount = period.getOverlappingDayCount(budgetPeriod.getPeriod());
         return (double) amountOfBudgetPeriod / (double) budgetPeriod.getDayCount() * overlappingDayCount;
     }
 
-    private BudgetPeriod createBudgetPeriod(Date startDate) {
-        return new BudgetPeriod(getBudgetPeriodType(), startDate);
-    }
-
-    /**
+	/**
 	 * Sets the budgeted amount for the given time period.
 	 * @param periodDate
 	 * @param amount
