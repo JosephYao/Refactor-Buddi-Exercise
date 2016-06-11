@@ -13,14 +13,6 @@ public class Period {
         this.endDate = endDate;
     }
 
-    public Date getStartDate() {
-        return startDate;
-    }
-
-    public Date getEndDate() {
-        return endDate;
-    }
-
     public long getDayCount() {
         return DateUtil.getDaysBetween(startDate, endDate, true);
     }
@@ -35,14 +27,4 @@ public class Period {
         return new Period(startDateOfOverlapping, endDateOfOverlapping).getDayCount();
     }
 
-    @Override
-    public int hashCode() {
-        return startDate.hashCode();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        Period another = (Period) obj;
-        return startDate.equals(another.startDate);
-    }
 }

@@ -29,12 +29,12 @@ public class BudgetCategoryImpl extends SourceImpl implements BudgetCategory {
 	private Map<String, Long> amounts;
 	private List<BudgetCategory> children;
 	private List<BudgetCategory> allChildren;
-    private Map<BudgetPeriod, BudgetPeriod> budgetPeriods;
+    private List<BudgetPeriod> budgetPeriods;
 
     public Map<String, Long> getBudgetPeriods() {
 		if (amounts == null) {
             amounts = new HashMap<String, Long>();
-            budgetPeriods = new HashMap<>();
+            budgetPeriods = new ArrayList<>();
         }
 		return amounts;
 	}
@@ -106,7 +106,7 @@ public class BudgetCategoryImpl extends SourceImpl implements BudgetCategory {
     }
 
     private long getAmountWithValidatePeriod(final Period period) {
-		return (long) budgetPeriods.values().stream()
+		return (long) budgetPeriods.stream()
 				.mapToDouble(budgetPeriod -> budgetPeriod.getOverlappingAmountWithPeriod(period))
                 .sum();
     }
@@ -120,7 +120,7 @@ public class BudgetCategoryImpl extends SourceImpl implements BudgetCategory {
 		if (getAmountOfBudgetPeriod(periodDate) != amount)
 			setChanged();
 		getBudgetPeriods().put(getPeriodKey(periodDate), amount);
-        budgetPeriods.put(new BudgetPeriod(getBudgetPeriodType(), periodDate), new BudgetPeriod(getBudgetPeriodType(), periodDate, amount));
+        budgetPeriods.add(new BudgetPeriod(getBudgetPeriodType(), periodDate, amount));
 	}
 	public BudgetCategoryType getPeriodType() {
 		return periodType;
