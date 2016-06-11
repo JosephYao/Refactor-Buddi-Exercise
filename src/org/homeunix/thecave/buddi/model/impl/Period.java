@@ -31,4 +31,15 @@ public class Period {
 
         return new Period(startDateOfOverlapping, endDateOfOverlapping).getDayCount();
     }
+
+    @Override
+    public int hashCode() {
+        return startDate.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        Period another = (Period) obj;
+        return startDate.equals(another.startDate);
+    }
 }

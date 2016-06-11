@@ -12,7 +12,10 @@ import org.homeunix.thecave.buddi.model.ModelObject;
 import org.homeunix.thecave.buddi.plugin.api.exception.DataModelProblemException;
 import org.homeunix.thecave.buddi.plugin.api.exception.InvalidValueException;
 
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Default implementation of an BudgetCategory.  You should not create this object directly; 
@@ -29,10 +32,13 @@ public class BudgetCategoryImpl extends SourceImpl implements BudgetCategory {
 	private Map<String, Long> amounts;
 	private List<BudgetCategory> children;
 	private List<BudgetCategory> allChildren;
-	
-	public Map<String, Long> getBudgetPeriods() {
-		if (amounts == null)
-			amounts = new HashMap<String, Long>();
+    private Map<BudgetPeriod, BudgetPeriod> budgetPeriods;
+
+    public Map<String, Long> getBudgetPeriods() {
+		if (amounts == null) {
+            amounts = new HashMap<String, Long>();
+            budgetPeriods = new HashMap<>();
+        }
 		return amounts;
 	}
 	public void setBudgetPeriods(Map<String, Long> amounts) {
@@ -46,9 +52,10 @@ public class BudgetCategoryImpl extends SourceImpl implements BudgetCategory {
 	 */
 	public long getAmountOfBudgetPeriod(Date periodDate){
 		Long l = getBudgetPeriods().get(getPeriodKey(periodDate));
-		if (l == null)
+        BudgetPeriod budgetPeriodWithAmount = budgetPeriods.get(new BudgetPeriod(getBudgetPeriodType(), periodDate));
+		if (l == null || budgetPeriodWithAmount == null)
 			return 0;
-		return l;
+		return budgetPeriodWithAmount.getAmount();
 	}
 	
 	@Override
@@ -117,12 +124,11 @@ public class BudgetCategoryImpl extends SourceImpl implements BudgetCategory {
 	}
 
 	private double getAmountOfOverlappingDays(Period period, BudgetPeriod budgetPeriod) {
-        long amountOfBudgetPeriod = getAmountOfBudgetPeriod(budgetPeriod.getStartDate());
-        long overlappingDayCount = period.getOverlappingDayCount(budgetPeriod.getPeriod());
-        return (double) amountOfBudgetPeriod / (double) budgetPeriod.getDayCount() * overlappingDayCount;
+        BudgetPeriod budgetPeriodWithAmount = budgetPeriods.get(budgetPeriod);
+        return budgetPeriodWithAmount.getOverlappingAmountWithPeriod(period);
     }
 
-	/**
+    /**
 	 * Sets the budgeted amount for the given time period.
 	 * @param periodDate
 	 * @param amount
@@ -131,6 +137,7 @@ public class BudgetCategoryImpl extends SourceImpl implements BudgetCategory {
 		if (getAmountOfBudgetPeriod(periodDate) != amount)
 			setChanged();
 		getBudgetPeriods().put(getPeriodKey(periodDate), amount);
+        budgetPeriods.put(new BudgetPeriod(getBudgetPeriodType(), periodDate), new BudgetPeriod(getBudgetPeriodType(), periodDate, amount));
 	}
 	public BudgetCategoryType getPeriodType() {
 		return periodType;
