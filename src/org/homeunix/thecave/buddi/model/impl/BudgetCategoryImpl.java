@@ -52,10 +52,9 @@ public class BudgetCategoryImpl extends SourceImpl implements BudgetCategory {
 	 */
 	public long getAmountOfBudgetPeriod(Date periodDate){
 		Long l = getBudgetPeriods().get(getPeriodKey(periodDate));
-        BudgetPeriod budgetPeriodWithAmount = budgetPeriods.get(new BudgetPeriod(getBudgetPeriodType(), periodDate));
-		if (l == null || budgetPeriodWithAmount == null)
+		if (l == null)
 			return 0;
-		return budgetPeriodWithAmount.getAmount();
+		return l;
 	}
 	
 	@Override
