@@ -12,10 +12,7 @@ import org.homeunix.thecave.buddi.model.ModelObject;
 import org.homeunix.thecave.buddi.plugin.api.exception.DataModelProblemException;
 import org.homeunix.thecave.buddi.plugin.api.exception.InvalidValueException;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Default implementation of an BudgetCategory.  You should not create this object directly; 
@@ -109,22 +106,9 @@ public class BudgetCategoryImpl extends SourceImpl implements BudgetCategory {
     }
 
     private long getAmountWithValidatePeriod(final Period period) {
-		return (long) firstBudgetPeriod(period).createBudgetPeriodsTill(lastBudgetPeriod(period)).stream()
-				.mapToDouble(budgetPeriod -> getAmountOfOverlappingDays(period, budgetPeriod))
+		return (long) budgetPeriods.values().stream()
+				.mapToDouble(budgetPeriod -> budgetPeriod.getOverlappingAmountWithPeriod(period))
                 .sum();
-    }
-
-	private BudgetPeriod lastBudgetPeriod(Period period) {
-		return new BudgetPeriod(getBudgetPeriodType(), period.getEndDate());
-	}
-
-	private BudgetPeriod firstBudgetPeriod(Period period) {
-		return new BudgetPeriod(getBudgetPeriodType(), period.getStartDate());
-	}
-
-	private double getAmountOfOverlappingDays(Period period, BudgetPeriod budgetPeriod) {
-        BudgetPeriod budgetPeriodWithAmount = budgetPeriods.get(budgetPeriod);
-        return budgetPeriodWithAmount.getOverlappingAmountWithPeriod(period);
     }
 
     /**
